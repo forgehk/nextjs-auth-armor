@@ -1,0 +1,29 @@
+node_modules/
+.next/
+out/
+build/
+
+# env
+.env
+.env.local
+.env*.local
+.env.production
+
+# logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# ide
+.vscode/
+.idea/
+.DS_Store
+
+# supabase
+supabase/.branches/
+supabase/.temp/
+
+# typescript build info
+*.tsbuildinfo
+next-env.d.ts
