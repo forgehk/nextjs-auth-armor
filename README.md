@@ -2,7 +2,7 @@
 
 > A Next.js 14 App Router starter with Supabase auth, Row-Level Security policies, honeypot-protected forms, and a proper security-header middleware. The stack I actually ship at DarkForge AI, hardened.
 
-[![Next.js](https://img.shields.io/badge/Next.js-14-000000.svg)]() [![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6.svg)]() [![Supabase](https://img.shields.io/badge/Supabase-Auth_%2B_RLS-3FCF8E.svg)]() [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+![Next.js](https://img.shields.io/badge/Next.js-14-000000.svg) ![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6.svg) ![Supabase](https://img.shields.io/badge/Supabase-Auth_%2B_RLS-3FCF8E.svg) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 ---
 
@@ -14,7 +14,7 @@ Most Next.js starters skip the boring-but-load-bearing stuff:
 - **Row-Level Security policies** so the database actually enforces who can see what — not just the app layer.
 - **Security headers** wired into `middleware.ts` (HSTS, CSP, XCTO, XFO, Referrer-Policy, Permissions-Policy).
 - **Honeypot-protected contact forms** that block 99% of spam bots without a third-party captcha.
-- **Server actions** for the things they're actually good at (mutations) and **route handlers** for the things they're not (file uploads, public APIs).
+- **Route handlers** for the public surface — the contact endpoint and the magic-link callback — so the auth exchange happens server-side.
 
 `nextjs-auth-armor` ships all of that as a working starter you can `git clone`, `npm install`, and have running in under five minutes.
 
@@ -29,7 +29,8 @@ Most Next.js starters skip the boring-but-load-bearing stuff:
 │   ├── app/
 │   │   ├── layout.tsx             # Root layout w/ session-aware nav
 │   │   ├── page.tsx               # Public landing
-│   │   ├── login/page.tsx         # Email magic-link or password login
+│   │   ├── login/page.tsx         # Email magic-link sign-in
+│   │   ├── auth/callback/route.ts # Exchanges the magic-link code for a session
 │   │   ├── dashboard/page.tsx     # Protected route (RSC reads user profile)
 │   │   └── api/contact/route.ts   # Honeypot-protected contact form handler
 │   ├── components/ContactForm.tsx # Form with hidden honeypot field
@@ -120,6 +121,10 @@ npm run dev
 
 Then visit http://localhost:3000.
 
+Set `NEXT_PUBLIC_SITE_URL` in production and add `<site-url>/auth/callback` to the
+allowed redirect URLs in your Supabase project, or the sign-in email will bounce
+the user to an unauthorised-redirect error.
+
 ---
 
 ## Why I built this
@@ -132,11 +137,12 @@ It's also a useful interview artifact: it concretely demonstrates **AppSec** ins
 
 ## Roadmap
 
-- [x] Supabase email/password + magic link auth
+- [x] Supabase magic-link auth (send, callback, session cookies)
 - [x] RLS migrations
 - [x] Security-header middleware
 - [x] Honeypot contact form
 - [x] Server-side session validation
+- [ ] Email + password sign-in
 - [ ] Stripe subscription billing
 - [ ] Optional 2FA (TOTP via Supabase)
 - [ ] Audit-log table + Postgres trigger
