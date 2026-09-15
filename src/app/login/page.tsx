@@ -11,7 +11,9 @@ export default function LoginPage() {
   const next = params.get("next") || "/dashboard";
   const [email, setEmail] = useState("");
   const [sent, setSent] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  // /auth/callback sends failures back here as ?error=... rather than showing
+  // a raw error page, so surface whatever it passed.
+  const [error, setError] = useState<string | null>(params.get("error"));
 
   async function sendMagicLink(e: React.FormEvent) {
     e.preventDefault();
