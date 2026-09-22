@@ -2,7 +2,7 @@
 
 > A Next.js 14 App Router starter with Supabase auth, Row-Level Security policies, honeypot-protected forms, and a proper security-header middleware. The stack I actually ship at DarkForge AI, hardened.
 
-![Next.js](https://img.shields.io/badge/Next.js-14-000000.svg) ![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6.svg) ![Supabase](https://img.shields.io/badge/Supabase-Auth_%2B_RLS-3FCF8E.svg) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![CI](https://github.com/forgehk/nextjs-auth-armor/actions/workflows/ci.yml/badge.svg)](https://github.com/forgehk/nextjs-auth-armor/actions/workflows/ci.yml) ![Next.js](https://img.shields.io/badge/Next.js-14-000000.svg) ![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6.svg) ![Supabase](https://img.shields.io/badge/Supabase-Auth_%2B_RLS-3FCF8E.svg) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 ---
 
@@ -124,6 +124,17 @@ Then visit http://localhost:3000.
 Set `NEXT_PUBLIC_SITE_URL` in production and add `<site-url>/auth/callback` to the
 allowed redirect URLs in your Supabase project, or the sign-in email will bounce
 the user to an unauthorised-redirect error.
+
+Before opening a pull request, run the same checks CI does:
+
+```bash
+npm run typecheck   # tsc --noEmit
+npm run lint        # next lint, config in .eslintrc.json
+npm run build
+```
+
+CI runs those three on Node 22 and 24 for every push and pull request, installing
+fresh each time because the template ships without a lockfile.
 
 ---
 
