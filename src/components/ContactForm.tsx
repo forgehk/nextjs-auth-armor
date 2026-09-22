@@ -29,7 +29,7 @@ export default function ContactForm() {
   if (state === "sent") {
     return (
       <p className="rounded border border-green-200 bg-green-50 p-3 text-sm">
-        Thanks — we'll be in touch.
+        Thanks — we&apos;ll be in touch.
       </p>
     );
   }
