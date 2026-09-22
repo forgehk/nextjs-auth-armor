@@ -3,6 +3,8 @@ import Link from "next/link";
 
 import { createServerClient } from "@/lib/supabase/server";
 
+import "./globals.css";
+
 export const metadata: Metadata = {
   title: "nextjs-auth-armor",
   description: "Next.js + Supabase + RLS + security headers, hardened.",
