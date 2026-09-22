@@ -12,9 +12,9 @@ Most Next.js starters skip the boring-but-load-bearing stuff:
 
 - **Auth that works on both server and client components** (this matters a lot in App Router).
 - **Row-Level Security policies** so the database actually enforces who can see what — not just the app layer.
-- **Security headers** wired into `middleware.ts` (HSTS, CSP, XCTO, XFO, Referrer-Policy, Permissions-Policy).
+- **Security headers** wired into `src/middleware.ts` (HSTS, CSP, XCTO, XFO, Referrer-Policy, Permissions-Policy).
 - **Honeypot-protected contact forms** that block 99% of spam bots without a third-party captcha.
-- **Route handlers** for the public surface — the contact endpoint and the magic-link callback — so the auth exchange happens server-side.
+- **Route handlers** for the public surface — the contact endpoint, the magic-link callback and sign-out — so the auth exchange happens server-side.
 
 `nextjs-auth-armor` ships all of that as a working starter you can `git clone`, `npm install`, and have running in under five minutes.
 
@@ -24,14 +24,16 @@ Most Next.js starters skip the boring-but-load-bearing stuff:
 
 ```
 .
-├── middleware.ts                  # Security headers + auth redirect logic
 ├── src/
+│   ├── middleware.ts              # Security headers + auth redirect logic
 │   ├── app/
 │   │   ├── layout.tsx             # Root layout w/ session-aware nav
+│   │   ├── globals.css            # Tailwind layers
 │   │   ├── page.tsx               # Public landing
 │   │   ├── login/page.tsx         # Email magic-link sign-in
 │   │   ├── auth/callback/route.ts # Exchanges the magic-link code for a session
 │   │   ├── dashboard/page.tsx     # Protected route (RSC reads user profile)
+│   │   ├── api/auth/signout/route.ts # Clears the session cookies
 │   │   └── api/contact/route.ts   # Honeypot-protected contact form handler
 │   ├── components/ContactForm.tsx # Form with hidden honeypot field
 │   └── lib/
@@ -40,6 +42,8 @@ Most Next.js starters skip the boring-but-load-bearing stuff:
 ├── supabase/migrations/
 │   ├── 0001_profiles_table.sql    # Profiles table linked to auth.users
 │   └── 0002_rls_policies.sql      # RLS: users can read/update only their own row
+├── tailwind.config.ts
+├── postcss.config.js
 └── package.json
 ```
 
@@ -50,7 +54,7 @@ Most Next.js starters skip the boring-but-load-bearing stuff:
 ### 1. Middleware: security headers + auth gate
 
 ```ts
-// middleware.ts
+// src/middleware.ts
 const headers = new Headers(req.headers);
 
 const response = NextResponse.next({ request: { headers } });
